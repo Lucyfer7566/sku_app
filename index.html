@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Đơn Hàng SKU</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            max-width: 98% !important;
+            width: 98% !important;
+            padding: 20px !important;
+        }
+    </style>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container glass-panel">
+        <header class="header" style="position: relative;">
+            <button id="back-home-btn" class="hidden" style="position: absolute; top: -10px; right: 0; padding: 8px 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-weight: bold; z-index: 10;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                <i class="ph ph-arrow-u-up-left"></i> Đổi Nền Tảng
+            </button>
+            <h1 class="title">Thống Kê <span>Sản Phẩm</span></h1>
+            <p class="subtitle">Trích xuất và tính toán lượng hàng bán ra tự động từ báo cáo sàn TMĐT.</p>
+        </header>
+
+        <div id="platform-selection-screen" style="display: flex; gap: 20px; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+            <div id="btn-tiktok" style="flex: 1; max-width: 300px; background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='var(--primary)'; this.style.transform='translateY(-5px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.transform='translateY(0)'">
+                <i class="ph ph-tiktok-logo" style="font-size: 4em; color: white; margin-bottom: 15px; display: block;"></i>
+                <h2 style="color: white; margin: 0; font-size: 1.5em;">TikTok Shop</h2>
+                <p style="color: rgba(255,255,255,0.6); margin-top: 10px; font-size: 0.9em;">Phân tích file .csv<br>(Tất cả đơn hàng...)</p>
+            </div>
+
+            <div id="btn-shopee" style="flex: 1; max-width: 300px; background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='#f53d2d'; this.style.transform='translateY(-5px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.transform='translateY(0)'">
+                <i class="ph ph-shopping-bag" style="font-size: 4em; color: #f53d2d; margin-bottom: 15px; display: block;"></i>
+                <h2 style="color: white; margin: 0; font-size: 1.5em;">Shopee</h2>
+                <p style="color: rgba(255,255,255,0.6); margin-top: 10px; font-size: 0.9em;">Phân tích file .xlsx<br>(Order.all...)</p>
+            </div>
+
+            <div id="btn-both" style="flex: 1; max-width: 300px; background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s;" onmouseover="this.style.borderColor='#10b981'; this.style.transform='translateY(-5px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.transform='translateY(0)'">
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                    <i class="ph ph-tiktok-logo" style="font-size: 3em; color: white;"></i>
+                    <i class="ph ph-plus" style="font-size: 2em; color: rgba(255,255,255,0.5); margin-top: 10px;"></i>
+                    <i class="ph ph-shopping-bag" style="font-size: 3em; color: #f53d2d;"></i>
+                </div>
+                <h2 style="color: white; margin: 0; font-size: 1.5em;">Tổng Hợp 2 Sàn</h2>
+                <p style="color: rgba(255,255,255,0.6); margin-top: 10px; font-size: 0.9em;">Báo cáo Gộp (2 file cùng lúc)<br>Xuất file có 2 Sheet độc lập</p>
+            </div>
+        </div>
+
+        <section class="upload-section hidden" id="main-upload-section">
+            <div id="single-upload-container">
+                <div class="upload-zone" id="upload-zone">
+                    <i class="ph ph-cloud-arrow-up icon"></i>
+                    <p class="upload-text">Kéo thả file báo cáo vào đây hoặc <span>chọn file</span></p>
+                    <p class="upload-hint" id="dynamic-upload-hint">Hỗ trợ file định dạng .csv hoặc .xlsx</p>
+                    <input type="file" id="file-input" accept=".csv, .xlsx" class="hidden-input">
+                </div>
+                <div id="file-info" class="file-info hidden" style="flex-wrap: wrap;">
+                    <i class="ph ph-file-csv" style="font-size: 1.5em; color: var(--primary);"></i>
+                    <span id="file-name" style="flex: 1; min-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 10px;"></span>
+                    <button id="remove-file-btn" style="flex-shrink: 0; padding: 6px 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.3)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'">
+                        <i class="ph ph-x"></i> Hủy
+                    </button>
+                </div>
+            </div>
+
+            <div id="dual-upload-container" class="hidden" style="display: flex; gap: 20px;">
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="upload-zone" id="upload-zone-tiktok" style="min-height: 150px; padding: 20px; flex: 1;">
+                        <i class="ph ph-tiktok-logo icon" style="font-size: 3em; color: white;"></i>
+                        <p class="upload-text" style="font-size: 1.1em; margin: 10px 0;">Kéo thả file <span>TikTok</span></p>
+                        <p class="upload-hint">Hỗ trợ .csv (Tất cả đơn hàng...)</p>
+                        <input type="file" id="file-input-tiktok" accept=".csv" class="hidden-input">
+                    </div>
+                    <div id="file-info-tiktok" class="file-info hidden" style="flex-wrap: wrap; margin-top: 10px;">
+                        <span id="file-name-tiktok" style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></span>
+                        <button id="remove-file-btn-tiktok" style="flex-shrink: 0; padding: 4px 8px; background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.4); cursor: pointer;"><i class="ph ph-x"></i> Hủy</button>
+                    </div>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <div class="upload-zone" id="upload-zone-shopee" style="min-height: 150px; padding: 20px; flex: 1;">
+                        <i class="ph ph-shopping-bag icon" style="font-size: 3em; color: #f53d2d;"></i>
+                        <p class="upload-text" style="font-size: 1.1em; margin: 10px 0;">Kéo thả file <span>Shopee</span></p>
+                        <p class="upload-hint">Hỗ trợ .xlsx (Order.all...)</p>
+                        <input type="file" id="file-input-shopee" accept=".xlsx, .xls" class="hidden-input">
+                    </div>
+                    <div id="file-info-shopee" class="file-info hidden" style="flex-wrap: wrap; margin-top: 10px;">
+                        <span id="file-name-shopee" style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></span>
+                        <button id="remove-file-btn-shopee" style="flex-shrink: 0; padding: 4px 8px; background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.4); cursor: pointer;"><i class="ph ph-x"></i> Hủy</button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="process-btn" class="btn primary-btn" disabled>
+                <i class="ph ph-magic-wand"></i> Xử lí dữ liệu
+            </button>
+        </section>
+
+        <section class="results-section hidden" id="results-section">
+            <div class="results-header" style="flex-wrap: wrap; gap: 15px;">
+                <div id="preview-tabs" class="hidden" style="display: flex; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 4px;">
+                    <button id="tab-tiktok" style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="ph ph-tiktok-logo"></i> Xem TikTok</button>
+                    <button id="tab-shopee" style="padding: 8px 16px; background: transparent; color: rgba(255,255,255,0.6); border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s;"><i class="ph ph-shopping-bag"></i> Xem Shopee</button>
+                </div>
+                <h2 id="results-title">Kết Quả Thống Kê (Không tính hoàn/hủy)</h2>
+                <button id="export-btn" class="btn success-btn">
+                    <i class="ph ph-download-simple"></i> Xuất Excel
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table id="results-table">
+                    <!-- JS sẽ inject thead và tbody vào đây tự động -->
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Custom Alert Modal overlay -->
+    <div id="custom-alert" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="background: #1e1b4b; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6); transform: translateY(-30px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);" id="custom-alert-box">
+            <i class="ph ph-warning-octagon" style="font-size: 4.5em; color: #ef4444; margin-bottom: 15px; display: block;"></i>
+            <h3 style="color: white; font-size: 1.3em; margin-bottom: 12px; font-weight: 700;" id="custom-alert-title">Thông báo</h3>
+            <p style="color: rgba(255,255,255,0.75); font-size: 0.95em; margin-bottom: 25px; line-height: 1.6;" id="custom-alert-message">Nội dung</p>
+            <button id="custom-alert-btn" class="btn primary-btn" style="width: 100%; border-radius: 12px; padding: 12px; font-size: 1.05em;">Đã hiểu</button>
+        </div>
+    </div>
+
+    <!-- PapaParse for CSV processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- SheetJS để ĐỌC file báo cáo Excel (XLSX) từ Shopee -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- MỚI: Dùng thư viện ExcelJS để can thiệp sâu vào cấu trúc phần mềm MS Excel -> hỗ trợ Freeze Panes chuẩn xác 100% -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+
+</html>
